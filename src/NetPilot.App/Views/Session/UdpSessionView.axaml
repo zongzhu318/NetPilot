@@ -1,0 +1,81 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:NetPilot.App.Views.Controls"
+             x:Class="NetPilot.App.Views.Session.UdpSessionView">
+  <Grid RowDefinitions="Auto,*" Margin="12">
+    <Border Classes="card" Padding="12,11" Margin="0,0,0,10">
+      <StackPanel Spacing="11">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+          <Border Classes="protocolBadge udp">
+            <TextBlock Text="UDP" FontSize="11" FontWeight="SemiBold" />
+          </Border>
+          <TextBox Grid.Column="1" Classes="sessionTitle" Width="190" Margin="8,0,0,0"
+                   Text="{Binding SessionName}" ToolTip.Tip="点击可重命名会话" />
+          <ComboBox Grid.Column="2" Width="112" Margin="8,0,0,0"
+                    ItemsSource="{Binding ModeOptions}"
+                    SelectedItem="{Binding ModeOption, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Display}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+          <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="14,0,12,0">
+            <Border Classes="statusPill" Classes.running="{Binding IsRunning}"
+                    Classes.starting="{Binding IsStarting}" Classes.stopped="{Binding IsStopped}"
+                    Classes.faulted="{Binding IsFaulted}">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <Ellipse Width="7" Height="7" Fill="{Binding StatusBrush}" />
+                <TextBlock Text="{Binding StatusLabel}" FontSize="11" />
+              </StackPanel>
+            </Border>
+            <TextBlock Text="{Binding StatusMessage}" Classes="muted" FontSize="11"
+                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+          </StackPanel>
+          <Button Grid.Column="4" Classes="primary" Classes.stop="{Binding IsActive}"
+                  Content="{Binding ConnectButtonText}" MinWidth="82"
+                  Command="{Binding ConnectCommand}" IsEnabled="{Binding !IsBusy}" />
+        </Grid>
+
+        <WrapPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3" IsVisible="{Binding IsClientMode}">
+            <TextBlock Text="目标地址" Classes="fieldLabel" />
+            <TextBox Width="150" Height="28" FontSize="11" Text="{Binding Host}"
+                     ToolTip.Tip="可填写 255.255.255.255 进行广播" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3" IsVisible="{Binding IsClientMode}">
+            <TextBlock Text="目标端口" Classes="fieldLabel" />
+            <TextBox Width="80" Height="28" FontSize="11" Text="{Binding Port}" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3" IsVisible="{Binding IsClientMode}">
+            <TextBlock Text="本地源端口" Classes="fieldLabel" />
+            <TextBox Width="80" Height="28" FontSize="11" Text="{Binding LocalPort}"
+                     ToolTip.Tip="0 表示由系统自动分配" />
+          </StackPanel>
+
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3" IsVisible="{Binding IsServerMode}">
+            <TextBlock Text="监听地址" Classes="fieldLabel" />
+            <TextBox Width="150" Height="28" FontSize="11" Text="{Binding LocalHost}" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3" IsVisible="{Binding IsServerMode}">
+            <TextBlock Text="监听端口" Classes="fieldLabel" />
+            <TextBox Width="80" Height="28" FontSize="11" Text="{Binding Port}" />
+          </StackPanel>
+        </WrapPanel>
+
+        <Border Classes="infoStrip" IsVisible="{Binding IsServerMode}">
+          <TextBlock Text="提示：UDP 监听模式下，从接收日志选中一条报文即可回发到来源地址。"
+                     FontSize="10" Classes="muted" TextWrapping="Wrap" />
+        </Border>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="1.4*,10,*">
+      <controls:LogPanel Grid.Column="0" />
+      <Grid Grid.Column="2" RowDefinitions="Auto,*">
+        <controls:ClientListPanel Grid.Row="0" Margin="0,0,0,10" />
+        <controls:SendPanel Grid.Row="1" />
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

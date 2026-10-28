@@ -1,0 +1,97 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="NetPilot.App.Views.SettingsWindow"
+        Width="520" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Title="偏好设置" Background="{DynamicResource AppBackgroundBrush}"
+        Icon="/Assets/netpilot-icon.ico">
+  <Border Padding="20">
+    <StackPanel Spacing="14">
+      <StackPanel Spacing="3">
+        <TextBlock Text="偏好设置" FontSize="18" FontWeight="SemiBold" />
+        <TextBlock Text="设置保存在本机，重启后依然生效。" Classes="muted" FontSize="11" />
+      </StackPanel>
+
+      <Border Classes="panel" Padding="14">
+        <StackPanel Spacing="10">
+          <TextBlock Text="外观" Classes="sectionTitle" />
+          <Grid ColumnDefinitions="110,*" RowDefinitions="Auto,Auto,Auto">
+            <TextBlock Text="主题" Classes="fieldLabel" Margin="0,4" />
+            <ComboBox Grid.Column="1" Height="30" Margin="0,4" ItemsSource="{Binding ThemeOptions}"
+                      SelectedItem="{Binding ThemeOption, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Display}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="1" Text="界面字体" Classes="fieldLabel" Margin="0,4" />
+            <TextBox Grid.Row="1" Grid.Column="1" Height="30" Margin="0,4" Text="{Binding FontFamily}"
+                     Watermark="留空使用系统默认字体，例如 Microsoft YaHei UI" />
+
+            <TextBlock Grid.Row="2" Text="字号" Classes="fieldLabel" Margin="0,4" />
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="0,4">
+              <TextBox Width="90" Height="30" Text="{Binding FontSize}" />
+              <TextBlock Text="默认 13" Classes="hint" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="panel" Padding="14">
+        <StackPanel Spacing="10">
+          <TextBlock Text="日志" Classes="sectionTitle" />
+          <Grid ColumnDefinitions="110,*" RowDefinitions="Auto,Auto,Auto">
+            <TextBlock Text="默认编码" Classes="fieldLabel" Margin="0,4" />
+            <ComboBox Grid.Column="1" Height="30" Margin="0,4" ItemsSource="{Binding EncodingOptions}"
+                      SelectedItem="{Binding EncodingOption, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Display}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="1" Text="单会话日志上限" Classes="fieldLabel" Margin="0,4" />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="0,4">
+              <TextBox Width="120" Height="30" Text="{Binding MaxLogEntries}" />
+              <TextBlock Text="100 – 200000 条" Classes="hint" VerticalAlignment="Center" />
+            </StackPanel>
+
+            <TextBlock Grid.Row="2" Text="全局日志上限" Classes="fieldLabel" Margin="0,4" />
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="0,4">
+              <TextBox Width="120" Height="30" Text="{Binding MaxGlobalLogEntries}" />
+              <TextBlock Text="超出后自动丢弃最早的记录" Classes="hint" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+          <StackPanel Spacing="6" Margin="0,4,0,0">
+            <CheckBox Content="接收日志显示毫秒时间戳" FontSize="12" IsChecked="{Binding ShowTimestamps}" />
+            <CheckBox Content="接收日志自动滚动到底部" FontSize="12" IsChecked="{Binding AutoScroll}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="panel" Padding="14">
+        <StackPanel Spacing="10">
+          <TextBlock Text="发送" Classes="sectionTitle" />
+          <Grid ColumnDefinitions="110,*">
+            <TextBlock Text="默认循环间隔" Classes="fieldLabel" Margin="0,4" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="0,4">
+              <TextBox Width="120" Height="30" Text="{Binding LoopIntervalMs}" />
+              <TextBlock Text="毫秒，新建会话时使用" Classes="hint" VerticalAlignment="Center" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="所有设置仅保存在本机" Classes="hint" VerticalAlignment="Center" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+          <Button Classes="ghost" Content="取消" MinWidth="76" Click="OnCancel" IsCancel="True" />
+          <Button Classes="primary" Content="保存" MinWidth="76" Click="OnSave" IsDefault="True" />
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </Border>
+</Window>

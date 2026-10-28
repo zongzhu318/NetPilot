@@ -1,0 +1,129 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:NetPilot.App.Views.Controls"
+             x:Class="NetPilot.App.Views.Controls.SendPanel">
+  <UserControl.KeyBindings>
+    <KeyBinding Gesture="Ctrl+Enter" Command="{Binding SendCommand}" />
+  </UserControl.KeyBindings>
+
+  <Border Classes="card" Padding="12">
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,9">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="发送面板" Classes="cardTitle" />
+          <TextBlock Text="{Binding SendCharCountText}" Classes="faint" FontSize="10" VerticalAlignment="Center" />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="tool" Content="清空" Command="{Binding ClearSendCommand}"
+                ToolTip.Tip="清空发送内容" />
+      </Grid>
+
+      <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+        <TextBlock Text="格式" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <ComboBox Width="76" Height="28" FontSize="11" Margin="0,0,6,4"
+                  ItemsSource="{Binding SendFormatOptions}"
+                  SelectedItem="{Binding SendFormatOption, Mode=TwoWay}"
+                  ToolTip.Tip="发送内容的格式">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="编码" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <ComboBox Width="88" Height="28" FontSize="11" Margin="0,0,6,4"
+                  ItemsSource="{Binding SendEncodingOptions}"
+                  SelectedItem="{Binding SendEncodingOption, Mode=TwoWay}"
+                  ToolTip.Tip="文本发送时使用的字符集">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="换行" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <ComboBox Width="106" Height="28" FontSize="11" Margin="0,0,6,4"
+                  ItemsSource="{Binding NewlineOptions}"
+                  SelectedItem="{Binding NewlineOption, Mode=TwoWay}"
+                  ToolTip.Tip="在报文末尾追加换行符">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox Width="74" Height="28" FontSize="11" Margin="0,0,6,4"
+                 Watermark="\r\n" Text="{Binding CustomNewline}"
+                 IsVisible="{Binding ShowCustomNewline}" />
+        <ComboBox Width="118" Height="28" FontSize="11" Margin="0,0,0,4"
+                  ItemsSource="{Binding SendHistory}"
+                  SelectedItem="{Binding SelectedHistory, Mode=TwoWay}"
+                  PlaceholderText="历史记录"
+                  ToolTip.Tip="选择最近发送过的内容">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" MaxWidth="320" TextTrimming="CharacterEllipsis" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+      </WrapPanel>
+
+      <Grid Grid.Row="2">
+        <controls:CodeEditor MinHeight="110" WordWrap="True"
+                             Text="{Binding SendText, Mode=TwoWay}"
+                             Syntax="{Binding SendSyntax}" />
+        <TextBlock Text="在此输入要发送的报文…" Classes="faint" FontSize="11"
+                   Margin="12,10" IsHitTestVisible="False"
+                   IsVisible="{Binding !HasSendText}" />
+      </Grid>
+
+      <WrapPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+        <TextBlock Text="转换" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <Button Classes="chip" Content="转 Hex" Margin="0,0,4,4"
+                Command="{Binding CodecCommand}" CommandParameter="toHex"
+                ToolTip.Tip="把发送内容按当前编码转换为 Hex" />
+        <Button Classes="chip" Content="Hex 转文本" Margin="0,0,4,4"
+                Command="{Binding CodecCommand}" CommandParameter="hexToText" />
+        <Button Classes="chip" Content="转 Base64" Margin="0,0,4,4"
+                Command="{Binding CodecCommand}" CommandParameter="toBase64" />
+        <Button Classes="chip" Content="Base64 转文本" Margin="0,0,6,4"
+                Command="{Binding CodecCommand}" CommandParameter="base64ToText" />
+        <Button Classes="chip" Content="JSON 美化" Margin="0,0,4,4"
+                Command="{Binding CodecCommand}" CommandParameter="jsonFormat" />
+        <Button Classes="chip" Content="JSON 校验" Margin="0,0,8,4"
+                Command="{Binding CodecCommand}" CommandParameter="jsonValidate" />
+        <CheckBox Content="模板变量" FontSize="11" Margin="0,0,8,4"
+                  IsChecked="{Binding UseTemplateVariables}"
+                  ToolTip.Tip="${time} / ${time:HH:mm:ss} 时间戳，${random} / ${random:100-999} 随机数，${seq} / ${seq:1} 自增序号" />
+        <CheckBox Content="Binary 帧" FontSize="11" Margin="0,0,0,4"
+                  IsChecked="{Binding SendAsBinary}"
+                  IsVisible="{Binding SupportsBinaryMessages}" />
+      </WrapPanel>
+
+      <Border Grid.Row="4" Classes="inset" Padding="6,4" Margin="0,6,0,0">
+        <WrapPanel Orientation="Horizontal">
+          <TextBlock Text="自动发送" Classes="fieldLabel" FontSize="11" FontWeight="SemiBold"
+                     Margin="2,0,8,4" />
+          <TextBlock Text="间隔" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+          <TextBox Width="58" Height="26" FontSize="11" Margin="0,0,10,4" Text="{Binding LoopIntervalMs}"
+                   ToolTip.Tip="两次发送之间的间隔（毫秒）" />
+          <TextBlock Text="次数" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+          <TextBox Width="48" Height="26" FontSize="11" Margin="0,0,8,4" Text="{Binding LoopCount}"
+                   ToolTip.Tip="0 表示无限循环" />
+          <Button Classes="chip" Classes.danger="{Binding IsLooping}" Content="{Binding ToggleLoopText}"
+                  Margin="0,0,8,4" Command="{Binding ToggleLoopCommand}" />
+          <TextBlock Text="{Binding LoopProgressText}" Classes="faint" FontSize="10"
+                     VerticalAlignment="Center" Margin="0,0,0,4" />
+        </WrapPanel>
+      </Border>
+
+      <Grid Grid.Row="5" ColumnDefinitions="Auto,*,Auto" Margin="0,8,0,0">
+        <Button Classes="ghost" Content="加载文件" FontSize="11" Command="{Binding LoadFileCommand}"
+                ToolTip.Tip="从本地文件载入发送内容（二进制会自动转为 Hex）" />
+        <Button Grid.Column="2" Classes="primary" Content="发送  (Ctrl+Enter)"
+                MinWidth="172" Height="36" FontSize="13"
+                Command="{Binding SendCommand}"
+                ToolTip.Tip="发送当前内容；未连接时禁用" />
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>

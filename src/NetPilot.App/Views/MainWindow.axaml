@@ -1,0 +1,198 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:NetPilot.App.ViewModels"
+        xmlns:sessions="clr-namespace:NetPilot.App.Views.Session"
+        x:Class="NetPilot.App.Views.MainWindow"
+        Width="1400" Height="880" MinWidth="1080" MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        Title="{Binding WindowTitle}"
+        Icon="/Assets/netpilot-icon.ico"
+        Background="{DynamicResource AppBackgroundBrush}">
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveSessionCommand}" />
+    <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenSessionCommand}" />
+    <KeyBinding Gesture="Ctrl+W" Command="{Binding CloseActiveSessionCommand}" />
+    <KeyBinding Gesture="Ctrl+Tab" Command="{Binding NextSessionCommand}" />
+    <KeyBinding Gesture="Ctrl+Shift+Tab" Command="{Binding PreviousSessionCommand}" />
+  </Window.KeyBindings>
+
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <Menu Grid.Row="0">
+      <MenuItem Header="文件">
+        <MenuItem Header="新建会话">
+          <MenuItem Header="TCP 客户端" Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Client" />
+          <MenuItem Header="TCP 服务端" Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Server" />
+          <MenuItem Header="UDP 发送端" Command="{Binding NewSessionCommand}" CommandParameter="Udp:Client" />
+          <MenuItem Header="UDP 监听" Command="{Binding NewSessionCommand}" CommandParameter="Udp:Server" />
+          <MenuItem Header="WebSocket 客户端" Command="{Binding NewSessionCommand}" CommandParameter="WebSocket:Client" />
+          <MenuItem Header="WebSocket 服务端" Command="{Binding NewSessionCommand}" CommandParameter="WebSocket:Server" />
+          <MenuItem Header="HTTP 请求" Command="{Binding NewSessionCommand}" CommandParameter="Http:Client" />
+          <MenuItem Header="HTTP Mock 服务" Command="{Binding NewSessionCommand}" CommandParameter="Http:Server" />
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="打开会话…" InputGesture="Ctrl+O" Command="{Binding OpenSessionCommand}" />
+        <MenuItem Header="保存会话" InputGesture="Ctrl+S" Command="{Binding SaveSessionCommand}" />
+        <MenuItem Header="会话另存为…" InputGesture="Ctrl+Shift+S" Command="{Binding SaveSessionAsCommand}" />
+        <Separator />
+        <MenuItem Header="退出" Command="{Binding ExitCommand}" />
+      </MenuItem>
+
+      <MenuItem Header="会话">
+        <MenuItem Header="关闭当前标签" InputGesture="Ctrl+W" Command="{Binding CloseActiveSessionCommand}" />
+        <Separator />
+        <MenuItem Header="收藏当前会话…" Command="{Binding SaveFavoriteCommand}" />
+        <MenuItem Header="收藏夹…" Command="{Binding OpenFavoritesCommand}" />
+      </MenuItem>
+
+      <MenuItem Header="工具">
+        <MenuItem Header="全局日志…" Command="{Binding OpenGlobalLogCommand}" />
+        <MenuItem Header="切换深色 / 浅色主题" Command="{Binding ToggleThemeCommand}" />
+        <MenuItem Header="偏好设置…" Command="{Binding OpenSettingsCommand}" />
+      </MenuItem>
+
+      <MenuItem Header="帮助">
+        <MenuItem Header="关于 NetPilot" Command="{Binding AboutCommand}" />
+      </MenuItem>
+    </Menu>
+
+    <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,0,0,1"
+            Padding="10,6">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <Menu Background="Transparent" BorderThickness="0" VerticalAlignment="Center">
+          <MenuItem>
+            <MenuItem.Header>
+              <TextBlock Text="+  新建会话" FontSize="12" FontWeight="SemiBold"
+                         Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+            </MenuItem.Header>
+            <MenuItem Header="TCP 客户端" Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Client" />
+            <MenuItem Header="TCP 服务端" Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Server" />
+            <MenuItem Header="UDP 发送端" Command="{Binding NewSessionCommand}" CommandParameter="Udp:Client" />
+            <MenuItem Header="UDP 监听" Command="{Binding NewSessionCommand}" CommandParameter="Udp:Server" />
+            <MenuItem Header="WebSocket 客户端" Command="{Binding NewSessionCommand}" CommandParameter="WebSocket:Client" />
+            <MenuItem Header="WebSocket 服务端" Command="{Binding NewSessionCommand}" CommandParameter="WebSocket:Server" />
+            <MenuItem Header="HTTP 请求" Command="{Binding NewSessionCommand}" CommandParameter="Http:Client" />
+            <MenuItem Header="HTTP Mock 服务" Command="{Binding NewSessionCommand}" CommandParameter="Http:Server" />
+          </MenuItem>
+        </Menu>
+
+        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                      Margin="8,0">
+          <ItemsControl ItemsSource="{Binding Sessions}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="2" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border Classes="tabItem" Classes.active="{Binding IsSelected}">
+                  <Grid ColumnDefinitions="Auto,Auto">
+                    <Button Classes="tabMain"
+                            Command="{Binding $parent[Window].DataContext.SelectSessionCommand}"
+                            CommandParameter="{Binding}"
+                            ToolTip.Tip="{Binding SessionName}">
+                      <StackPanel Orientation="Horizontal" Spacing="6">
+                        <Border Classes="protocolBadge" Classes.tcp="{Binding IsTcp}"
+                                Classes.udp="{Binding IsUdp}" Classes.ws="{Binding IsWebSocket}"
+                                Classes.http="{Binding IsHttp}">
+                          <TextBlock Text="{Binding ProtocolShort}" FontSize="9" FontWeight="SemiBold" />
+                        </Border>
+                        <TextBlock Text="{Binding SessionName}" Classes="tabName" MaxWidth="160"
+                                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                        <Ellipse Width="6" Height="6" Fill="{Binding StatusBrush}" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </Button>
+                    <Button Grid.Column="1" Classes="tabClose" Content="✕"
+                            Command="{Binding $parent[Window].DataContext.CloseSessionCommand}"
+                            CommandParameter="{Binding}"
+                            ToolTip.Tip="关闭标签（Ctrl+W）" />
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+          <Button Classes="toolbarAction" Content="☆  收藏夹" ToolTip.Tip="查看收藏的连接模板"
+                  Command="{Binding OpenFavoritesCommand}" />
+          <Button Classes="toolbarAction" Content="▤  全局日志" ToolTip.Tip="查看所有会话的收发记录"
+                  Command="{Binding OpenGlobalLogCommand}" />
+          <Button Classes="toolbarAction" Content="{Binding ThemeButtonText}" ToolTip.Tip="在深色和浅色主题之间切换"
+                  Command="{Binding ToggleThemeCommand}" />
+          <Button Classes="toolbarAction" Content="⚙  设置" ToolTip.Tip="字体、主题与日志偏好"
+                  Command="{Binding OpenSettingsCommand}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="2">
+      <ContentControl Content="{Binding ActiveSession}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="{x:Type vm:TcpSessionViewModel}">
+            <sessions:TcpSessionView />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type vm:UdpSessionViewModel}">
+            <sessions:UdpSessionView />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type vm:WebSocketSessionViewModel}">
+            <sessions:WebSocketSessionView />
+          </DataTemplate>
+          <DataTemplate DataType="{x:Type vm:HttpSessionViewModel}">
+            <sessions:HttpSessionView />
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12" MaxWidth="620"
+                  IsVisible="{Binding !HasSessions}">
+        <Border Classes="emptyIcon">
+          <TextBlock Text="⇄" FontSize="24" Classes="faint"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+        <TextBlock Text="开始一次网络调试" Classes="pageTitle" HorizontalAlignment="Center" Margin="0,4,0,0" />
+        <TextBlock Text="选择一种协议创建会话，收发数据只保存在本机。" Classes="muted"
+                   HorizontalAlignment="Center" />
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+          <Button Classes="ghost" Content="TCP 客户端" Margin="0,0,6,6"
+                  Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Client" />
+          <Button Classes="ghost" Content="TCP 服务端" Margin="0,0,6,6"
+                  Command="{Binding NewSessionCommand}" CommandParameter="Tcp:Server" />
+          <Button Classes="ghost" Content="WebSocket 客户端" Margin="0,0,6,6"
+                  Command="{Binding NewSessionCommand}" CommandParameter="WebSocket:Client" />
+          <Button Classes="ghost" Content="HTTP 请求" Margin="0,0,6,6"
+                  Command="{Binding NewSessionCommand}" CommandParameter="Http:Client" />
+          <Button Classes="ghost" Content="HTTP Mock" Margin="0,0,6,6"
+                  Command="{Binding NewSessionCommand}" CommandParameter="Http:Server" />
+        </WrapPanel>
+        <TextBlock Text="快捷键：Ctrl+S 保存会话 · Ctrl+W 关闭标签 · Ctrl+Tab 切换标签 · Ctrl+Enter 发送"
+                   Classes="hint" HorizontalAlignment="Center" Margin="0,6,0,0" />
+      </StackPanel>
+
+      <Border Classes="toast" IsVisible="{Binding ToastVisible}">
+        <TextBlock Text="{Binding ToastText}" FontSize="12" Foreground="{DynamicResource ToastForegroundBrush}" />
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="3" Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource DividerBrush}" BorderThickness="0,1,0,0"
+            Padding="12,5">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+          <Ellipse Width="7" Height="7" Fill="{Binding ActiveStatusBrush}" />
+          <TextBlock Text="{Binding ActiveStatusMessage}" FontSize="10" Classes="muted"
+                     VerticalAlignment="Center" />
+          <TextBlock Text="{Binding SessionCountText}" FontSize="10" Classes="faint"
+                     VerticalAlignment="Center" />
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="{Binding ActiveTrafficText}" FontSize="10" Classes="faint"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <TextBlock Text="全部数据仅保存在本机" FontSize="10" Classes="faint" />
+          <TextBlock Text="{Binding VersionText}" FontSize="10" Classes="faint" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

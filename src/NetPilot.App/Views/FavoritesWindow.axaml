@@ -1,0 +1,75 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="NetPilot.App.Views.FavoritesWindow"
+        Width="640" Height="480" MinWidth="500" MinHeight="340"
+        WindowStartupLocation="CenterOwner" Title="收藏夹"
+        Icon="/Assets/netpilot-icon.ico"
+        Background="{DynamicResource AppBackgroundBrush}">
+  <Grid RowDefinitions="Auto,*,Auto" Margin="14">
+    <Border Classes="card" Padding="12" Margin="0,0,0,10">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="连接模板收藏" Classes="cardTitle" />
+          <Border Classes="badge">
+            <TextBlock Text="{Binding FavoriteCountText}" FontSize="10" Classes="muted" />
+          </Border>
+        </StackPanel>
+        <TextBlock Grid.Column="1" Text="应用收藏会新建独立会话，不影响当前标签" Classes="hint"
+                   VerticalAlignment="Center" />
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Classes="card" Padding="8">
+      <Grid>
+        <ListBox ItemsSource="{Binding Favorites}" Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid ColumnDefinitions="*,Auto,Auto" Margin="4,3">
+                <StackPanel Spacing="3">
+                  <StackPanel Orientation="Horizontal" Spacing="7">
+                    <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold"
+                               VerticalAlignment="Center" />
+                    <Border Classes="badge">
+                      <TextBlock Text="{Binding Config.Protocol}" FontSize="9" Classes="muted" />
+                    </Border>
+                  </StackPanel>
+                  <TextBlock Classes="faint" FontSize="10">
+                    <TextBlock.Text>
+                      <MultiBinding StringFormat="{}{0} · {1}:{2}">
+                        <Binding Path="Config.Protocol" />
+                        <Binding Path="Config.Host" />
+                        <Binding Path="Config.Port" />
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
+                  <TextBlock Text="{Binding Config.SessionName}" Classes="faint" FontSize="10" />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="chip" Content="应用" Margin="0,0,6,0"
+                        VerticalAlignment="Center"
+                        ToolTip.Tip="使用该模板新建一个会话标签"
+                        Command="{Binding $parent[Window].DataContext.ApplyFavoriteCommand}"
+                        CommandParameter="{Binding}" />
+                <Button Grid.Column="2" Classes="tool" Content="删除"
+                        VerticalAlignment="Center"
+                        Command="{Binding $parent[Window].DataContext.DeleteFavoriteCommand}"
+                        CommandParameter="{Binding}" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6"
+                    IsVisible="{Binding !HasFavorites}">
+          <TextBlock Text="☆" FontSize="24" Classes="faint" HorizontalAlignment="Center" />
+          <TextBlock Text="暂无收藏" Classes="muted" FontSize="12" HorizontalAlignment="Center" />
+          <TextBlock Text="在主窗口使用“会话 → 收藏当前会话”即可添加" Classes="hint"
+                     HorizontalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+      <TextBlock Text="收藏内容保存在本机，可随时删除" Classes="hint" VerticalAlignment="Center" />
+      <Button Grid.Column="1" Classes="ghost" Content="关闭" MinWidth="76" Click="OnClose" IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

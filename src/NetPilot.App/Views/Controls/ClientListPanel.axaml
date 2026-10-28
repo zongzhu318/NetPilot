@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="NetPilot.App.Views.Controls.ClientListPanel">
+  <Border Classes="card" Padding="12" Height="184" IsVisible="{Binding ShowClientList}">
+    <Grid RowDefinitions="Auto,*">
+      <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,7">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="客户端" Classes="cardTitle" />
+          <Border Classes="badge">
+            <TextBlock Text="{Binding ClientCountText}" FontSize="10" Classes="muted" />
+          </Border>
+        </StackPanel>
+        <CheckBox Grid.Column="1" Content="广播发送" FontSize="11"
+                  IsChecked="{Binding Broadcast}"
+                  IsVisible="{Binding ShowBroadcastOption}"
+                  ToolTip.Tip="勾选后发送到所有已连接的客户端" />
+      </Grid>
+
+      <Grid Grid.Row="1">
+        <ListBox ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid ColumnDefinitions="*,Auto" Margin="0,1">
+                <StackPanel Spacing="2">
+                  <TextBlock Text="{Binding Endpoint}" Classes="mono" FontSize="12" />
+                  <TextBlock Text="{Binding ConnectedLabel}" Classes="faint" FontSize="10" />
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding TrafficLabel}" Classes="muted" FontSize="10"
+                           VerticalAlignment="Center" Margin="8,0,0,0" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4"
+                    IsVisible="{Binding !HasClients}">
+          <TextBlock Text="暂无客户端接入" Classes="muted" FontSize="11" HorizontalAlignment="Center" />
+          <TextBlock Text="启动服务后，连接信息会显示在这里" Classes="hint" HorizontalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>

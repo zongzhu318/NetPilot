@@ -1,0 +1,158 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:NetPilot.App.Views.Controls"
+             x:Class="NetPilot.App.Views.Controls.LogPanel">
+  <Border Classes="card" Padding="12">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+      <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,9">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <TextBlock Text="会话日志" Classes="cardTitle" />
+          <Border Classes="badge">
+            <TextBlock Text="{Binding LogCountText}" FontSize="10" Classes="muted" />
+          </Border>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+          <CheckBox Content="时间戳" IsChecked="{Binding ShowTimestamps}" FontSize="11" Margin="0,0,4,0"
+                    ToolTip.Tip="在每条日志前显示毫秒时间戳" />
+          <CheckBox Content="自动滚动" IsChecked="{Binding AutoScroll}" FontSize="11" Margin="0,0,4,0" />
+          <Button Classes="tool" Content="清空" Command="{Binding ClearLogsCommand}"
+                  ToolTip.Tip="清空当前会话的全部日志" />
+        </StackPanel>
+      </Grid>
+
+      <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+        <TextBox Width="168" Height="28" FontSize="11" Margin="0,0,8,4"
+                 Watermark="搜索日志…" Text="{Binding LogFilter}"
+                 ToolTip.Tip="按时间、方向、地址或内容过滤日志" />
+        <CheckBox IsChecked="{Binding ShowSendLogs}" FontSize="11" Margin="0,0,10,4"
+                  ToolTip.Tip="显示发送的报文">
+          <StackPanel Orientation="Horizontal" Spacing="5">
+            <Ellipse Width="6" Height="6" Fill="{DynamicResource LogSendBrush}" VerticalAlignment="Center" />
+            <TextBlock Text="发送" FontSize="11" />
+          </StackPanel>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding ShowReceiveLogs}" FontSize="11" Margin="0,0,10,4"
+                  ToolTip.Tip="显示接收的报文">
+          <StackPanel Orientation="Horizontal" Spacing="5">
+            <Ellipse Width="6" Height="6" Fill="{DynamicResource LogReceiveBrush}" VerticalAlignment="Center" />
+            <TextBlock Text="接收" FontSize="11" />
+          </StackPanel>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding ShowOtherLogs}" FontSize="11" Margin="0,0,10,4"
+                  ToolTip.Tip="显示连接状态与错误信息">
+          <StackPanel Orientation="Horizontal" Spacing="5">
+            <Ellipse Width="6" Height="6" Fill="{DynamicResource LogInfoBrush}" VerticalAlignment="Center" />
+            <TextBlock Text="信息" FontSize="11" />
+          </StackPanel>
+        </CheckBox>
+        <Border Classes="divider" Height="18" Margin="0,2,8,6" />
+        <TextBlock Text="格式" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <ComboBox Width="76" Height="28" FontSize="11" Margin="0,0,6,4"
+                  ItemsSource="{Binding DisplayFormatOptions}"
+                  SelectedItem="{Binding DisplayFormatOption, Mode=TwoWay}"
+                  ToolTip.Tip="日志内容的显示格式">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock Text="编码" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+        <ComboBox Width="88" Height="28" FontSize="11" Margin="0,0,6,4"
+                  ItemsSource="{Binding DisplayEncodingOptions}"
+                  SelectedItem="{Binding DisplayEncodingOption, Mode=TwoWay}"
+                  ToolTip.Tip="按指定字符集解码日志内容">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Border Classes="divider" Height="18" Margin="0,2,4,6" />
+        <Button Classes="chip" Content="TXT" Margin="0,0,3,4"
+                Command="{Binding ExportLogsCommand}" CommandParameter="Txt"
+                ToolTip.Tip="导出全部日志为 TXT" />
+        <Button Classes="chip" Content="CSV" Margin="0,0,3,4"
+                Command="{Binding ExportLogsCommand}" CommandParameter="Csv"
+                ToolTip.Tip="导出全部日志为 CSV" />
+        <Button Classes="chip" Content="HEX" Margin="0,0,0,4"
+                Command="{Binding ExportLogsCommand}" CommandParameter="Hex"
+                ToolTip.Tip="导出全部日志为 HEX" />
+      </WrapPanel>
+
+      <Grid Grid.Row="2">
+        <ListBox x:Name="LogList" ItemsSource="{Binding Logs}"
+                 SelectedItem="{Binding SelectedLog, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,0,2,0"
+                    ToolTip.Tip="{Binding PreviewLine}">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding TimeLabel}" Classes="faint" FontSize="10" Width="76"
+                             VerticalAlignment="Center"
+                             IsVisible="{Binding $parent[ListBox].DataContext.ShowTimestamps}" />
+                  <Border Classes="logBar" Classes.send="{Binding IsSend}" Classes.receive="{Binding IsReceive}"
+                          Classes.error="{Binding IsError}" Height="20" Margin="0,0,6,0" />
+                  <TextBlock Text="{Binding DirectionGlyph}" FontSize="11" Width="14" VerticalAlignment="Center"
+                             Classes="logText" Classes.send="{Binding IsSend}" Classes.receive="{Binding IsReceive}"
+                             Classes.error="{Binding IsError}" Classes.info="{Binding IsInfo}" />
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding PreviewLine}" Classes="logText"
+                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="2" Text="{Binding SizeLabel}" Classes="faint" FontSize="10"
+                           VerticalAlignment="Center" Margin="8,0,0,0" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="5"
+                    IsVisible="{Binding !HasLogs}">
+          <TextBlock Text="⇅" FontSize="22" Classes="faint" HorizontalAlignment="Center" />
+          <TextBlock Text="暂无报文" Classes="muted" FontSize="12" HorizontalAlignment="Center" />
+          <TextBlock Text="连接后收发的数据会显示在这里" Classes="hint" HorizontalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+
+      <Border Grid.Row="3" Classes="inset" Margin="0,8,0,0" Padding="8"
+              IsVisible="{Binding HasSelectedLog}">
+        <Grid RowDefinitions="Auto,*">
+          <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding SelectedLog.TimeLabel}" Classes="faint" FontSize="10"
+                         VerticalAlignment="Center" Margin="0,0,10,0" />
+              <TextBlock Text="{Binding SelectedLog.DirectionLabel}" FontSize="11" FontWeight="SemiBold"
+                         Classes="logText" Classes.send="{Binding SelectedLog.IsSend}"
+                         Classes.receive="{Binding SelectedLog.IsReceive}"
+                         Classes.error="{Binding SelectedLog.IsError}" Classes.info="{Binding SelectedLog.IsInfo}"
+                         VerticalAlignment="Center" Margin="0,0,10,0" />
+              <TextBlock Text="{Binding SelectedLog.RemoteLabel}" Classes="muted" FontSize="10"
+                         VerticalAlignment="Center" Margin="0,0,10,0" />
+              <TextBlock Text="{Binding SelectedLog.SizeLabel}" Classes="faint" FontSize="10"
+                         VerticalAlignment="Center" />
+            </WrapPanel>
+            <WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Classes="tool" Content="复制" Command="{Binding CopySelectedCommand}"
+                      ToolTip.Tip="复制完整报文内容" />
+              <Button Classes="tool" Content="回发" Command="{Binding ReplySelectedCommand}"
+                      IsEnabled="{Binding CanReplySelected}" ToolTip.Tip="将这条接收报文原样发回来源" />
+              <Button Classes="tool" Content="载入发送" Command="{Binding LoadSelectedTextCommand}"
+                      ToolTip.Tip="把报文载入发送框以便修改" />
+              <Button Classes="chip" Content="TXT" Margin="4,0,2,0" Command="{Binding ExportSelectedCommand}"
+                      CommandParameter="Txt" ToolTip.Tip="导出选中日志为 TXT" />
+              <Button Classes="chip" Content="CSV" Margin="0,0,2,0" Command="{Binding ExportSelectedCommand}"
+                      CommandParameter="Csv" ToolTip.Tip="导出选中日志为 CSV" />
+              <Button Classes="chip" Content="HEX" Margin="0,0,4,0" Command="{Binding ExportSelectedCommand}"
+                      CommandParameter="Hex" ToolTip.Tip="导出选中日志为 HEX" />
+              <Button Classes="icon" Content="✕" Command="{Binding CloseDetailCommand}"
+                      ToolTip.Tip="收起详情" />
+            </WrapPanel>
+          </Grid>
+          <controls:CodeEditor Grid.Row="1" Height="150" IsReadOnly="True"
+                               Text="{Binding SelectedLog.DetailText, Mode=OneWay}"
+                               Syntax="{Binding SelectedLog.DetailSyntax}" />
+        </Grid>
+      </Border>
+    </Grid>
+  </Border>
+</UserControl>

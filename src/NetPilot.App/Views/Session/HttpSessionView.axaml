@@ -1,0 +1,366 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:NetPilot.App.Views.Controls"
+             x:Class="NetPilot.App.Views.Session.HttpSessionView">
+  <UserControl.KeyBindings>
+    <KeyBinding Gesture="Ctrl+Enter" Command="{Binding SendRequestCommand}" />
+  </UserControl.KeyBindings>
+
+  <Grid RowDefinitions="Auto,Auto,*" Margin="12">
+    <Border Classes="card" Padding="12,11" Margin="0,0,0,10">
+      <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+        <Border Classes="protocolBadge http">
+          <TextBlock Text="HTTP" FontSize="11" FontWeight="SemiBold" />
+        </Border>
+        <TextBox Grid.Column="1" Classes="sessionTitle" Width="190" Margin="8,0,0,0"
+                 Text="{Binding SessionName}" ToolTip.Tip="点击可重命名会话" />
+        <ComboBox Grid.Column="2" Width="130" Margin="8,0,0,0"
+                  ItemsSource="{Binding ModeOptions}"
+                  SelectedItem="{Binding ModeOption, Mode=TwoWay}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Display}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+        <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Margin="14,0,12,0">
+          <Border Classes="statusPill" Classes.running="{Binding IsRunning}"
+                  Classes.starting="{Binding IsStarting}" Classes.stopped="{Binding IsStopped}"
+                  Classes.faulted="{Binding IsFaulted}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <Ellipse Width="7" Height="7" Fill="{Binding StatusBrush}" />
+              <TextBlock Text="{Binding StatusLabel}" FontSize="11" />
+            </StackPanel>
+          </Border>
+          <TextBlock Text="{Binding StatusMessage}" Classes="muted" FontSize="11"
+                     TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+        </StackPanel>
+        <Button Grid.Column="4" Classes="primary" Classes.stop="{Binding IsActive}"
+                Content="{Binding ConnectButtonText}" MinWidth="82"
+                Command="{Binding ConnectCommand}" IsEnabled="{Binding !IsBusy}"
+                IsVisible="{Binding ShowConnectButton}" />
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Classes="card" Padding="10" Margin="0,0,0,10"
+            IsVisible="{Binding ShowRequestPanel}">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+        <ComboBox Width="100" Height="32" ItemsSource="{Binding HttpMethods}"
+                  SelectedItem="{Binding HttpMethod, Mode=TwoWay}"
+                  ToolTip.Tip="请求方法" />
+        <TextBox Grid.Column="1" Height="32" Margin="8,0" FontSize="12" Text="{Binding Url}"
+                 Watermark="https://example.com/api 或 127.0.0.1:8080/hello" />
+        <Button Grid.Column="2" Classes="primary" Content="发送请求"
+                Command="{Binding SendRequestCommand}"
+                ToolTip.Tip="发送请求（Ctrl+Enter）" />
+        <Button Grid.Column="3" Classes="ghost" Content="取消" Margin="6,0,0,0"
+                IsVisible="{Binding IsRequesting}" Command="{Binding CancelRequestCommand}" />
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Classes="card" Padding="10" Margin="0,0,0,10"
+            IsVisible="{Binding ShowMockPanel}">
+      <StackPanel Spacing="7">
+        <WrapPanel Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3">
+            <TextBlock Text="监听地址" Classes="fieldLabel" />
+            <TextBox Width="140" Height="28" FontSize="11" Text="{Binding LocalHost}" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3">
+            <TextBlock Text="监听端口" Classes="fieldLabel" />
+            <TextBox Width="78" Height="28" FontSize="11" Text="{Binding Port}" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,3,14,3">
+            <TextBlock Text="访问地址" Classes="fieldLabel" />
+            <TextBlock Text="{Binding MockUrlText}" Classes="mono" FontSize="11" VerticalAlignment="Center" />
+          </StackPanel>
+        </WrapPanel>
+        <Border Classes="infoStrip">
+          <TextBlock Text="启动 Mock 服务后，使用浏览器或其他工具访问该地址即可查看请求与固定响应。"
+                     FontSize="10" Classes="muted" TextWrapping="Wrap" />
+        </Border>
+      </StackPanel>
+    </Border>
+
+    <Grid Grid.Row="2" ColumnDefinitions="1.35*,10,*"
+          IsVisible="{Binding ShowRequestPanel}">
+      <TabControl Grid.Column="0">
+        <TabItem Header="响应">
+          <Grid RowDefinitions="Auto,Auto,Auto,*" Margin="0,10,0,0">
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+              <WrapPanel Orientation="Horizontal" IsVisible="{Binding HasResponse}">
+                <Border Classes="badge" Margin="0,0,6,4">
+                  <TextBlock Text="{Binding ResponseStatusText}" FontSize="11" FontWeight="SemiBold"
+                             Foreground="{Binding ResponseStatusBrush}" />
+                </Border>
+                <Border Classes="badge" Margin="0,0,6,4">
+                  <TextBlock Text="{Binding ResponseElapsedText}" FontSize="10" Classes="muted" />
+                </Border>
+                <Border Classes="badge" Margin="0,0,6,4">
+                  <TextBlock Text="{Binding ResponseSizeText}" FontSize="10" Classes="muted" />
+                </Border>
+                <TextBlock Text="{Binding ResponseContentType}" Classes="faint" FontSize="10"
+                           VerticalAlignment="Center" Margin="0,0,8,4"
+                           MaxWidth="180" TextTrimming="CharacterEllipsis" />
+              </WrapPanel>
+              <WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="显示" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+                <ComboBox Width="80" Height="28" FontSize="11" Margin="0,0,8,4"
+                          ItemsSource="{Binding ResponseFormatOptions}"
+                          SelectedItem="{Binding ResponseDisplayModeOption, Mode=TwoWay}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Display}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Classes="chip" Content="复制" Margin="0,0,4,4" Command="{Binding CopyResponseCommand}"
+                        ToolTip.Tip="复制响应内容" />
+                <Button Classes="chip" Content="保存" Margin="0,0,0,4" Command="{Binding SaveResponseCommand}"
+                        ToolTip.Tip="将响应保存到本地文件" />
+              </WrapPanel>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Text="{Binding ResponseError}" Foreground="{DynamicResource DangerBrush}"
+                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                       IsVisible="{Binding HasResponseError}" />
+
+            <Expander Grid.Row="2" Header="{Binding ResponseHeaderCountText}" IsExpanded="False"
+                      IsVisible="{Binding HasResponse}" Margin="0,0,0,6">
+              <ScrollViewer MaxHeight="140">
+                <ItemsControl ItemsSource="{Binding ResponseHeaders}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid ColumnDefinitions="170,*" Margin="0,1">
+                        <TextBlock Text="{Binding Key}" Classes="mono" FontSize="10"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock Grid.Column="1" Text="{Binding Value}" Classes="muted" FontSize="10"
+                                   TextWrapping="Wrap" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+            </Expander>
+
+            <Grid Grid.Row="3">
+              <controls:CodeEditor IsReadOnly="True" WordWrap="True"
+                                   Text="{Binding ResponseBodyText, Mode=OneWay}"
+                                   Syntax="{Binding ResponseBodySyntax}" />
+              <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="5"
+                          IsVisible="{Binding !HasResponse}">
+                <TextBlock Text="⇄" FontSize="22" Classes="faint" HorizontalAlignment="Center" />
+                <TextBlock Text="发送请求后，响应内容会显示在这里" Classes="hint" FontSize="11"
+                           HorizontalAlignment="Center" />
+              </StackPanel>
+            </Grid>
+          </Grid>
+        </TabItem>
+        <TabItem Header="会话日志">
+          <controls:LogPanel />
+        </TabItem>
+      </TabControl>
+
+      <ScrollViewer Grid.Column="2">
+        <StackPanel Spacing="8">
+          <Border Classes="panel" Padding="10">
+            <StackPanel Spacing="7">
+              <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Text="请求头" Classes="cardTitle" FontSize="13" VerticalAlignment="Center" />
+                <Menu Grid.Column="1" Background="Transparent" BorderThickness="0">
+                  <MenuItem Header="常用头" FontSize="11">
+                    <MenuItem Header="Content-Type: application/json"
+                              Command="{Binding AddCommonHeaderCommand}" CommandParameter="Content-Type" />
+                    <MenuItem Header="Authorization: Bearer"
+                              Command="{Binding AddCommonHeaderCommand}" CommandParameter="Authorization" />
+                    <MenuItem Header="Accept: application/json"
+                              Command="{Binding AddCommonHeaderCommand}" CommandParameter="Accept" />
+                    <MenuItem Header="User-Agent"
+                              Command="{Binding AddCommonHeaderCommand}" CommandParameter="User-Agent" />
+                    <MenuItem Header="X-Request-Id"
+                              Command="{Binding AddCommonHeaderCommand}" CommandParameter="X-Request-Id" />
+                  </MenuItem>
+                </Menu>
+                <Button Grid.Column="2" Classes="tool" Content="添加" Margin="4,0,0,0"
+                        Command="{Binding AddRequestHeaderCommand}" ToolTip.Tip="添加一条自定义请求头" />
+              </Grid>
+              <ScrollViewer MaxHeight="150">
+                <ItemsControl ItemsSource="{Binding RequestHeaders}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid ColumnDefinitions="Auto,124,*,Auto" Margin="0,2">
+                        <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center"
+                                  ToolTip.Tip="取消勾选可临时停用该请求头" />
+                        <TextBox Grid.Column="1" Height="28" FontSize="11" Margin="3,0" Watermark="名称"
+                                 Text="{Binding Key}" />
+                        <TextBox Grid.Column="2" Height="28" FontSize="11" Margin="3,0" Watermark="值"
+                                 Text="{Binding Value}" />
+                        <Button Grid.Column="3" Classes="icon" Content="✕" Margin="4,0,0,0"
+                                ToolTip.Tip="删除该请求头"
+                                Command="{Binding $parent[UserControl].DataContext.RemoveRequestHeaderCommand}"
+                                CommandParameter="{Binding}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="panel" Padding="10">
+            <StackPanel Spacing="7">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="请求体" Classes="cardTitle" FontSize="13" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" Width="160" Height="28" FontSize="11"
+                          ItemsSource="{Binding BodyKindOptions}"
+                          SelectedItem="{Binding BodyKindOption, Mode=TwoWay}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Display}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+              </Grid>
+
+              <StackPanel Spacing="7" IsVisible="{Binding ShowRawBody}">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <TextBlock Text="Content-Type" Classes="fieldLabel" FontSize="10" />
+                  <TextBox Grid.Column="1" Height="28" FontSize="11" Margin="6,0"
+                           Text="{Binding RawContentType}" />
+                  <Button Grid.Column="2" Classes="chip" Content="JSON 美化"
+                          Command="{Binding FormatRawBodyCommand}" />
+                </Grid>
+                <WrapPanel Orientation="Horizontal">
+                  <TextBlock Text="格式" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+                  <ComboBox Width="76" Height="26" FontSize="11" Margin="0,0,6,4"
+                            ItemsSource="{Binding SendFormatOptions}"
+                            SelectedItem="{Binding SendFormatOption, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Display}" />
+                      </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                  </ComboBox>
+                  <TextBlock Text="编码" Classes="fieldLabel" FontSize="10" Margin="0,0,4,4" />
+                  <ComboBox Width="88" Height="26" FontSize="11" Margin="0,0,0,4"
+                            ItemsSource="{Binding SendEncodingOptions}"
+                            SelectedItem="{Binding SendEncodingOption, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding Display}" />
+                      </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                  </ComboBox>
+                </WrapPanel>
+                <controls:CodeEditor Height="160" WordWrap="True"
+                                     Text="{Binding RawBody, Mode=TwoWay}"
+                                     Syntax="{Binding SendSyntax}" />
+              </StackPanel>
+
+              <StackPanel Spacing="7" IsVisible="{Binding ShowFormFields}">
+                <Button Classes="chip" Content="添加字段" HorizontalAlignment="Left"
+                        Command="{Binding AddFormFieldCommand}" />
+                <ItemsControl ItemsSource="{Binding FormFields}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid ColumnDefinitions="Auto,116,*,Auto" Margin="0,2">
+                        <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="1" Height="28" FontSize="11" Margin="3,0" Watermark="字段名"
+                                 Text="{Binding Key}" />
+                        <TextBox Grid.Column="2" Height="28" FontSize="11" Margin="3,0" Watermark="字段值"
+                                 Text="{Binding Value}" />
+                        <Button Grid.Column="3" Classes="icon" Content="✕" Margin="4,0,0,0"
+                                ToolTip.Tip="删除该字段"
+                                Command="{Binding $parent[UserControl].DataContext.RemoveFormFieldCommand}"
+                                CommandParameter="{Binding}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+
+              <Grid ColumnDefinitions="*,Auto,Auto" IsVisible="{Binding ShowFormFile}">
+                <TextBlock Text="{Binding FormFileName}" Classes="faint" FontSize="10"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <Button Grid.Column="1" Classes="chip" Content="选择文件" Margin="6,0"
+                        Command="{Binding ChooseFormFileCommand}" />
+                <Button Grid.Column="2" Classes="tool" Content="清除"
+                        Command="{Binding ClearFormFileCommand}" />
+              </Grid>
+
+              <CheckBox Content="忽略 TLS 证书校验" FontSize="11"
+                        IsChecked="{Binding IgnoreCertificate}"
+                        IsVisible="{Binding ShowIgnoreCertificateOption}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+
+    <Grid Grid.Row="2" ColumnDefinitions="1.05*,10,*"
+          IsVisible="{Binding ShowMockPanel}">
+      <controls:LogPanel Grid.Column="0" />
+
+      <ScrollViewer Grid.Column="2">
+        <StackPanel Spacing="8">
+          <Border Classes="panel" Padding="10">
+            <StackPanel Spacing="9">
+              <TextBlock Text="Mock 响应配置" Classes="cardTitle" FontSize="13" />
+              <Grid ColumnDefinitions="Auto,80,*">
+                <TextBlock Text="状态码" Classes="fieldLabel" />
+                <TextBox Grid.Column="1" Height="28" FontSize="11" Margin="8,0"
+                         Text="{Binding MockStatus}" />
+                <TextBox Grid.Column="2" Height="28" FontSize="11"
+                         Text="{Binding MockContentType}"
+                         Watermark="响应 Content-Type" />
+              </Grid>
+              <CheckBox Content="启用 CORS（允许跨域访问）" FontSize="11"
+                        IsChecked="{Binding MockEnableCors}" />
+              <TextBlock Text="修改以上配置后需停止并重新启动 Mock 服务才会生效。"
+                         Classes="hint" TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="panel" Padding="10">
+            <StackPanel Spacing="7">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="响应头" Classes="cardTitle" FontSize="13" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="tool" Content="添加"
+                        Command="{Binding AddMockHeaderCommand}" ToolTip.Tip="添加一条自定义响应头" />
+              </Grid>
+              <ItemsControl ItemsSource="{Binding MockHeaders}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid ColumnDefinitions="Auto,116,*,Auto" Margin="0,2">
+                      <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" />
+                      <TextBox Grid.Column="1" Height="28" FontSize="11" Margin="3,0" Watermark="名称"
+                               Text="{Binding Key}" />
+                      <TextBox Grid.Column="2" Height="28" FontSize="11" Margin="3,0" Watermark="值"
+                               Text="{Binding Value}" />
+                      <Button Grid.Column="3" Classes="icon" Content="✕" Margin="4,0,0,0"
+                              ToolTip.Tip="删除该响应头"
+                              Command="{Binding $parent[UserControl].DataContext.RemoveMockHeaderCommand}"
+                              CommandParameter="{Binding}" />
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+
+          <Border Classes="panel" Padding="10">
+            <StackPanel Spacing="7">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="响应报文" Classes="cardTitle" FontSize="13" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Classes="chip" Content="JSON 美化"
+                        Command="{Binding FormatMockBodyCommand}" />
+              </Grid>
+              <controls:CodeEditor Height="230" WordWrap="True" Syntax="Json"
+                                   Text="{Binding MockBody, Mode=TwoWay}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -1,0 +1,675 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="NetPilot.App.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F2F5FA" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F7F9FD" />
+          <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#EDF2FA" />
+          <SolidColorBrush x:Key="CardBorderBrush" Color="#E1E8F2" />
+          <SolidColorBrush x:Key="DividerBrush" Color="#E9EEF6" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#0F172A" />
+          <SolidColorBrush x:Key="TextSecondaryBrush" Color="#52607A" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#8A97AD" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#2563EB" />
+          <SolidColorBrush x:Key="AccentHoverBrush" Color="#1D4ED8" />
+          <SolidColorBrush x:Key="AccentPressedBrush" Color="#1E40AF" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E8F0FF" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#15803D" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#E9F9F0" />
+          <SolidColorBrush x:Key="WarningBrush" Color="#B45309" />
+          <SolidColorBrush x:Key="WarningSoftBrush" Color="#FEF3C7" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#DC2626" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#FEECEC" />
+          <SolidColorBrush x:Key="LogSendBrush" Color="#2563EB" />
+          <SolidColorBrush x:Key="LogReceiveBrush" Color="#15803D" />
+          <SolidColorBrush x:Key="LogInfoBrush" Color="#64748B" />
+          <SolidColorBrush x:Key="LogErrorBrush" Color="#DC2626" />
+          <SolidColorBrush x:Key="CodeBgBrush" Color="#FBFCFE" />
+          <SolidColorBrush x:Key="CodeFgBrush" Color="#0F172A" />
+          <SolidColorBrush x:Key="SelectionBrush" Color="#BFDBFE" />
+          <SolidColorBrush x:Key="BadgeBgBrush" Color="#F1F5FB" />
+          <SolidColorBrush x:Key="FieldBackgroundBrush" Color="#F7F9FD" />
+          <SolidColorBrush x:Key="FieldBorderBrush" Color="#DEE5EF" />
+          <SolidColorBrush x:Key="TabStripBrush" Color="#ECF1F9" />
+          <SolidColorBrush x:Key="ToastBackgroundBrush" Color="#0F172A" />
+          <SolidColorBrush x:Key="ToastForegroundBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="TcpBrush" Color="#2563EB" />
+          <SolidColorBrush x:Key="TcpSoftBrush" Color="#E8F0FF" />
+          <SolidColorBrush x:Key="UdpBrush" Color="#7C3AED" />
+          <SolidColorBrush x:Key="UdpSoftBrush" Color="#F1EAFE" />
+          <SolidColorBrush x:Key="WsBrush" Color="#0F766E" />
+          <SolidColorBrush x:Key="WsSoftBrush" Color="#E3F7F3" />
+          <SolidColorBrush x:Key="HttpBrush" Color="#C2410C" />
+          <SolidColorBrush x:Key="HttpSoftBrush" Color="#FFF0E6" />
+          <Color x:Key="SystemAccentColor">#2563EB</Color>
+          <Color x:Key="SystemAccentColorDark1">#1D4ED8</Color>
+          <Color x:Key="SystemAccentColorDark2">#1E40AF</Color>
+          <Color x:Key="SystemAccentColorDark3">#1E3A8A</Color>
+          <Color x:Key="SystemAccentColorLight1">#3B82F6</Color>
+          <Color x:Key="SystemAccentColorLight2">#60A5FA</Color>
+          <Color x:Key="SystemAccentColorLight3">#93C5FD</Color>
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillChecked" Color="#2563EB" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" Color="#1D4ED8" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPressed" Color="#1E40AF" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeChecked" Color="#2563EB" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" Color="#1D4ED8" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed" Color="#1E40AF" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundChecked" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPointerOver" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPressed" Color="#FFFFFF" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0A1020" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#111827" />
+          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#0E1626" />
+          <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#182236" />
+          <SolidColorBrush x:Key="CardBorderBrush" Color="#223049" />
+          <SolidColorBrush x:Key="DividerBrush" Color="#1B2740" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E6EDF7" />
+          <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9AA8BF" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#6B7A92" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#3B82F6" />
+          <SolidColorBrush x:Key="AccentHoverBrush" Color="#60A5FA" />
+          <SolidColorBrush x:Key="AccentPressedBrush" Color="#2563EB" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#16294A" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#34D399" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#12312A" />
+          <SolidColorBrush x:Key="WarningBrush" Color="#FBBF24" />
+          <SolidColorBrush x:Key="WarningSoftBrush" Color="#33270F" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#F87171" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#3A1B1F" />
+          <SolidColorBrush x:Key="LogSendBrush" Color="#60A5FA" />
+          <SolidColorBrush x:Key="LogReceiveBrush" Color="#4ADE80" />
+          <SolidColorBrush x:Key="LogInfoBrush" Color="#94A3B8" />
+          <SolidColorBrush x:Key="LogErrorBrush" Color="#F87171" />
+          <SolidColorBrush x:Key="CodeBgBrush" Color="#0C1526" />
+          <SolidColorBrush x:Key="CodeFgBrush" Color="#DCE7F5" />
+          <SolidColorBrush x:Key="SelectionBrush" Color="#1E3A5F" />
+          <SolidColorBrush x:Key="BadgeBgBrush" Color="#1B2740" />
+          <SolidColorBrush x:Key="FieldBackgroundBrush" Color="#0D1524" />
+          <SolidColorBrush x:Key="FieldBorderBrush" Color="#24334D" />
+          <SolidColorBrush x:Key="TabStripBrush" Color="#0D1524" />
+          <SolidColorBrush x:Key="ToastBackgroundBrush" Color="#243049" />
+          <SolidColorBrush x:Key="ToastForegroundBrush" Color="#E6EDF7" />
+          <SolidColorBrush x:Key="TcpBrush" Color="#60A5FA" />
+          <SolidColorBrush x:Key="TcpSoftBrush" Color="#16294A" />
+          <SolidColorBrush x:Key="UdpBrush" Color="#A78BFA" />
+          <SolidColorBrush x:Key="UdpSoftBrush" Color="#2A1F4A" />
+          <SolidColorBrush x:Key="WsBrush" Color="#2DD4BF" />
+          <SolidColorBrush x:Key="WsSoftBrush" Color="#0E3A38" />
+          <SolidColorBrush x:Key="HttpBrush" Color="#FB923C" />
+          <SolidColorBrush x:Key="HttpSoftBrush" Color="#3A2416" />
+          <Color x:Key="SystemAccentColor">#3B82F6</Color>
+          <Color x:Key="SystemAccentColorDark1">#2563EB</Color>
+          <Color x:Key="SystemAccentColorDark2">#1D4ED8</Color>
+          <Color x:Key="SystemAccentColorDark3">#1E40AF</Color>
+          <Color x:Key="SystemAccentColorLight1">#60A5FA</Color>
+          <Color x:Key="SystemAccentColorLight2">#93C5FD</Color>
+          <Color x:Key="SystemAccentColorLight3">#BFDBFE</Color>
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillChecked" Color="#3B82F6" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" Color="#60A5FA" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillCheckedPressed" Color="#2563EB" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeChecked" Color="#3B82F6" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" Color="#60A5FA" />
+          <SolidColorBrush x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed" Color="#2563EB" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundChecked" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPointerOver" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="CheckBoxCheckGlyphForegroundCheckedPressed" Color="#FFFFFF" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+    <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+
+    <!-- 基础排版 -->
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}" />
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.faint">
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.sectionTitle">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.cardTitle">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBlock.pageTitle">
+      <Setter Property="FontSize" Value="20" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBlock.fieldLabel">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.hint">
+      <Setter Property="FontSize" Value="10" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.mono">
+      <Setter Property="FontFamily" Value="Consolas, Menlo, DejaVu Sans Mono, monospace" />
+    </Style>
+
+    <!-- 容器 -->
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+    </Style>
+
+    <Style Selector="Border.panel">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+    </Style>
+
+    <Style Selector="Border.inset">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+    </Style>
+
+    <Style Selector="Border.badge">
+      <Setter Property="Background" Value="{DynamicResource BadgeBgBrush}" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="7,2" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.divider">
+      <Setter Property="Width" Value="1" />
+      <Setter Property="Background" Value="{DynamicResource DividerBrush}" />
+      <Setter Property="Margin" Value="4,3" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge">
+      <Setter Property="Background" Value="{DynamicResource BadgeBgBrush}" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="7,2" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.tcp">
+      <Setter Property="Background" Value="{DynamicResource TcpSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.tcp TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TcpBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.udp">
+      <Setter Property="Background" Value="{DynamicResource UdpSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.udp TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource UdpBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.ws">
+      <Setter Property="Background" Value="{DynamicResource WsSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.ws TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource WsBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.http">
+      <Setter Property="Background" Value="{DynamicResource HttpSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.protocolBadge.http TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource HttpBrush}" />
+    </Style>
+
+    <Style Selector="Border.infoStrip">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="9,6" />
+    </Style>
+
+    <Style Selector="Border.emptyIcon">
+      <Setter Property="Background" Value="{DynamicResource BadgeBgBrush}" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Width" Value="56" />
+      <Setter Property="Height" Value="56" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.toast">
+      <Setter Property="Background" Value="{DynamicResource ToastBackgroundBrush}" />
+      <Setter Property="CornerRadius" Value="20" />
+      <Setter Property="Padding" Value="16,9" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+      <Setter Property="Margin" Value="0,0,0,26" />
+    </Style>
+
+    <!-- 按钮 -->
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Padding" Value="18,7" />
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="Button.primary:pointerover">
+      <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.primary:pressed">
+      <Setter Property="Background" Value="{DynamicResource AccentPressedBrush}" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.primary:disabled">
+      <Setter Property="Opacity" Value="0.45" />
+    </Style>
+
+    <Style Selector="Button.primary.stop">
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <Style Selector="Button.primary.stop:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+      <Setter Property="Opacity" Value="0.85" />
+    </Style>
+
+    <Style Selector="Button.ghost">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Padding" Value="12,6" />
+      <Setter Property="MinHeight" Value="30" />
+    </Style>
+
+    <Style Selector="Button.ghost:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+    </Style>
+
+    <Style Selector="Button.ghost:pressed">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+    </Style>
+
+    <Style Selector="Button.tool">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="MinHeight" Value="26" />
+      <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <Style Selector="Button.tool:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="Button.tool:disabled">
+      <Setter Property="Opacity" Value="0.4" />
+    </Style>
+
+    <Style Selector="Button.chip">
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="9,3" />
+      <Setter Property="MinHeight" Value="26" />
+      <Setter Property="FontSize" Value="10" />
+    </Style>
+
+    <Style Selector="Button.chip:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FieldBorderBrush}" />
+    </Style>
+
+    <Style Selector="Button.chip:disabled">
+      <Setter Property="Opacity" Value="0.55" />
+    </Style>
+
+    <Style Selector="Button.danger">
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Padding" Value="12,6" />
+      <Setter Property="MinHeight" Value="30" />
+    </Style>
+
+    <Style Selector="Button.danger:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="Opacity" Value="0.85" />
+    </Style>
+
+    <Style Selector="Button.icon">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Width" Value="26" />
+      <Setter Property="Height" Value="26" />
+      <Setter Property="MinWidth" Value="0" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button.icon:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="Button.icon:disabled">
+      <Setter Property="Opacity" Value="0.35" />
+    </Style>
+
+    <Style Selector="Button.toolbarAction">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="Padding" Value="10,6" />
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <Style Selector="Button.toolbarAction:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- 标签栏 -->
+    <Style Selector="Border.tabItem">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Margin" Value="0,0,4,0" />
+    </Style>
+
+    <Style Selector="Border.tabItem:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+    </Style>
+
+    <Style Selector="Border.tabItem.active">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+    </Style>
+
+    <Style Selector="Button.tabMain">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+      <Setter Property="Padding" Value="10,6,7,6" />
+      <Setter Property="CornerRadius" Value="7" />
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style Selector="Button.tabMain:pointerover">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="Border.tabItem.active Button.tabMain">
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="Border.tabItem.active TextBlock.tabName">
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="Button.tabClose">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="CornerRadius" Value="5" />
+      <Setter Property="Width" Value="19" />
+      <Setter Property="Height" Value="19" />
+      <Setter Property="MinWidth" Value="0" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontSize" Value="9" />
+      <Setter Property="Opacity" Value="0" />
+      <Setter Property="Margin" Value="0,0,4,0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.tabItem:pointerover Button.tabClose">
+      <Setter Property="Opacity" Value="0.75" />
+    </Style>
+
+    <Style Selector="Border.tabItem.active Button.tabClose">
+      <Setter Property="Opacity" Value="0.7" />
+    </Style>
+
+    <Style Selector="Button.tabClose:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+
+    <!-- 状态与日志 -->
+    <Style Selector="Border.statusPill">
+      <Setter Property="Background" Value="{DynamicResource BadgeBgBrush}" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="9,3" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.statusPill.running">
+      <Setter Property="Background" Value="{DynamicResource SuccessSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.starting">
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.stopped">
+      <Setter Property="Background" Value="{DynamicResource BadgeBgBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.faulted">
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.running TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.starting TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.faulted TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusPill.stopped TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+    </Style>
+
+    <Style Selector="Border.logBar">
+      <Setter Property="Width" Value="3" />
+      <Setter Property="CornerRadius" Value="2" />
+      <Setter Property="Background" Value="{DynamicResource LogInfoBrush}" />
+    </Style>
+
+    <Style Selector="Border.logBar.send">
+      <Setter Property="Background" Value="{DynamicResource LogSendBrush}" />
+    </Style>
+
+    <Style Selector="Border.logBar.receive">
+      <Setter Property="Background" Value="{DynamicResource LogReceiveBrush}" />
+    </Style>
+
+    <Style Selector="Border.logBar.error">
+      <Setter Property="Background" Value="{DynamicResource LogErrorBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.logText">
+      <Setter Property="FontFamily" Value="Consolas, Menlo, DejaVu Sans Mono, monospace" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.logText.send">
+      <Setter Property="Foreground" Value="{DynamicResource LogSendBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.logText.receive">
+      <Setter Property="Foreground" Value="{DynamicResource LogReceiveBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.logText.error">
+      <Setter Property="Foreground" Value="{DynamicResource LogErrorBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.logText.info">
+      <Setter Property="Foreground" Value="{DynamicResource LogInfoBrush}" />
+    </Style>
+
+    <!-- 输入与列表 -->
+    <Style Selector="TextBox">
+      <Setter Property="MinHeight" Value="28" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Background" Value="{DynamicResource FieldBackgroundBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FieldBorderBrush}" />
+      <Setter Property="SelectionBrush" Value="{DynamicResource SelectionBrush}" />
+    </Style>
+
+    <Style Selector="TextBox:focus">
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="TextBox.sessionTitle">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="7,3" />
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBox.sessionTitle:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+    </Style>
+
+    <Style Selector="TextBox.sessionTitle:focus">
+      <Setter Property="Background" Value="{DynamicResource FieldBackgroundBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    </Style>
+
+    <Style Selector="ComboBox">
+      <Setter Property="MinHeight" Value="28" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Background" Value="{DynamicResource FieldBackgroundBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FieldBorderBrush}" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style Selector="CheckBox">
+      <Setter Property="MinHeight" Value="24" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="ListBoxItem">
+      <Setter Property="Padding" Value="5,3" />
+      <Setter Property="Margin" Value="0,1" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="MinHeight" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="ListBoxItem:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+    </Style>
+
+    <Style Selector="ListBoxItem:selected">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+    </Style>
+
+    <Style Selector="DataGrid">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="GridLinesVisibility" Value="Horizontal" />
+      <Setter Property="RowHeight" Value="30" />
+      <Setter Property="HeadersVisibility" Value="Column" />
+    </Style>
+
+    <Style Selector="Menu">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+
+    <Style Selector="TabControl">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="TabItem">
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Padding" Value="10,6" />
+      <Setter Property="MinHeight" Value="32" />
+    </Style>
+
+    <Style Selector="Expander">
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+  </Application.Styles>
+</Application>

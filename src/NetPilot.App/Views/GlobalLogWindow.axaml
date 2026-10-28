@@ -1,0 +1,75 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="NetPilot.App.Views.GlobalLogWindow"
+        Width="1000" Height="640" MinWidth="760" MinHeight="440"
+        WindowStartupLocation="CenterOwner" Title="全局日志"
+        Icon="/Assets/netpilot-icon.ico"
+        Background="{DynamicResource AppBackgroundBrush}">
+  <Grid RowDefinitions="Auto,*,Auto" Margin="14">
+    <Border Classes="card" Padding="12" Margin="0,0,0,10">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+          <TextBlock Text="全局日志" Classes="cardTitle" />
+          <Border Classes="badge">
+            <TextBlock Text="{Binding CountText}" FontSize="10" Classes="muted" />
+          </Border>
+        </StackPanel>
+        <TextBox Grid.Column="1" Height="30" Margin="14,0" FontSize="11"
+                 Watermark="按会话、地址、方向或内容过滤…"
+                 Text="{Binding Filter}" />
+        <Button Grid.Column="2" Classes="tool" Content="清空" Command="{Binding ClearCommand}"
+                ToolTip.Tip="清空全局日志（不影响各会话日志）" />
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Classes="card" Padding="8">
+      <Grid RowDefinitions="Auto,Auto,*">
+        <Grid ColumnDefinitions="78,34,130,*,150,60" Margin="5,3,5,6">
+          <TextBlock Text="时间" Classes="hint" />
+          <TextBlock Grid.Column="1" Text="方向" Classes="hint" />
+          <TextBlock Grid.Column="2" Text="会话" Classes="hint" />
+          <TextBlock Grid.Column="3" Text="内容" Classes="hint" />
+          <TextBlock Grid.Column="4" Text="远端" Classes="hint" />
+          <TextBlock Grid.Column="5" Text="大小" Classes="hint" TextAlignment="Right" />
+        </Grid>
+        <Border Grid.Row="1" Height="1" Background="{DynamicResource DividerBrush}" Margin="0,0,0,3" />
+        <Grid Grid.Row="2">
+          <ListBox ItemsSource="{Binding Items}" Background="Transparent" BorderThickness="0">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid ColumnDefinitions="78,34,130,*,150,60" Margin="0,1">
+                  <TextBlock Text="{Binding TimeLabel}" Classes="faint" FontSize="10"
+                             VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="1" Text="{Binding DirectionLabel}" FontSize="10"
+                             Classes="logText" Classes.send="{Binding IsSend}" Classes.receive="{Binding IsReceive}"
+                             Classes.error="{Binding IsError}" Classes.info="{Binding IsInfo}" />
+                  <TextBlock Grid.Column="2" Text="{Binding SessionName}" Classes="muted" FontSize="10"
+                             TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                  <TextBlock Grid.Column="3" Text="{Binding Preview}" Classes="logText" FontSize="11"
+                             TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                             ToolTip.Tip="{Binding Preview}" />
+                  <TextBlock Grid.Column="4" Text="{Binding Remote}" Classes="faint" FontSize="10"
+                             TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="8,0" />
+                  <TextBlock Grid.Column="5" Text="{Binding Size}" Classes="faint" FontSize="10"
+                             TextAlignment="Right" VerticalAlignment="Center" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="5"
+                      IsVisible="{Binding !HasItems}">
+            <TextBlock Text="⇅" FontSize="22" Classes="faint" HorizontalAlignment="Center" />
+            <TextBlock Text="暂无收发事件" Classes="muted" FontSize="12" HorizontalAlignment="Center" />
+            <TextBlock Text="各会话的收发记录会汇总到这里" Classes="hint" HorizontalAlignment="Center" />
+          </StackPanel>
+        </Grid>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+      <TextBlock Text="全局日志保存在内存中，仅记录本次运行期间的收发事件" Classes="hint"
+                 VerticalAlignment="Center" />
+      <Button Grid.Column="1" Classes="ghost" Content="关闭" MinWidth="76" Click="OnClose" IsCancel="True" />
+    </Grid>
+  </Grid>
+</Window>

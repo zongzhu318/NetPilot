@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             x:Class="NetPilot.App.Views.Controls.CodeEditor">
+  <Border Classes="editorBorder" Background="{DynamicResource CodeBgBrush}"
+          BorderBrush="{DynamicResource CardBorderBrush}"
+          BorderThickness="1" CornerRadius="7" ClipToBounds="True">
+    <ae:TextEditor x:Name="Editor"
+                   Background="Transparent"
+                   Foreground="{DynamicResource CodeFgBrush}"
+                   FontFamily="Consolas, Menlo, DejaVu Sans Mono, monospace"
+                   FontSize="12"
+                   ShowLineNumbers="False" />
+  </Border>
+</UserControl>
