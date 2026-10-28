@@ -1,0 +1,45 @@
+# ---------- .NET / Visual Studio ----------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+artifacts/
+publish/
+
+# ---------- Test / coverage ----------
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# ---------- IDE ----------
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# ---------- NuGet / build logs ----------
+*.nupkg
+*.snupkg
+*.binlog
+logs/
+msbuild.log
+packages/
+
+# ---------- OS junk ----------
+.DS_Store
+Thumbs.db
+Desktop.ini
